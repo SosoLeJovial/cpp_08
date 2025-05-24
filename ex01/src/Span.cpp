@@ -6,7 +6,7 @@
 /*   By: tsofien- <tsofien-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:10:37 by tsofien-          #+#    #+#             */
-/*   Updated: 2025/04/22 15:09:27 by tsofien-         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:56:22 by tsofien-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ Span::Span(unsigned int n)
 		throw std::invalid_argument("Span size cannot be zero");
 	if (n > 10000)
 		throw std::out_of_range("Span size cannot exceed 10000");
-	_numbers.reserve(n);
 }
 
 Span::Span(const Span &src)
@@ -50,7 +49,17 @@ void Span::addNumber(int n)
 		setColor(RED);
 		throw std::out_of_range("Span is full");
 	}
-	_numbers.push_back(n);
+	_numbers.insert(n);
+}
+
+int Span::longestSpan()
+{
+	if (_numbers.size() < 2)
+	{
+		setColor(RED);
+		throw std::out_of_range("Not enough numbers to calculate span");
+	}
+	return *_numbers.rbegin() - *_numbers.begin();
 }
 
 int Span::shortestSpan()
@@ -61,31 +70,21 @@ int Span::shortestSpan()
 		throw std::out_of_range("Not enough numbers to calculate span");
 	}
 
-	return *max_element(_numbers.begin(), _numbers.end()) - *min_element(_numbers.begin(), _numbers.end());
-}
+	int minSpan = INT_MAX;
+	std::multiset<int>::iterator it = _numbers.begin();
+	std::multiset<int>::iterator next = it;
+	++next;
 
-int Span::longestSpan()
-{
-	if (_numbers.size() < 2)
+	while (next != _numbers.end())
 	{
-		setColor(RED);
-		throw std::out_of_range("Not enough numbers to calculate span");
-	}
-	if (_numbers.size() == 2)
-		return *max_element(_numbers.begin(), _numbers.end()) - *min_element(_numbers.begin(), _numbers.end());
-
-	std::vector<int> sortNumbers = _numbers;
-	std::sort(sortNumbers.begin(), sortNumbers.end());
-
-	std::vector<int> ranges;
-	std::vector<int>::iterator it = sortNumbers.begin();
-	for (size_t i = 0; i < sortNumbers.size() - 1; i++)
-	{
-		ranges.push_back(*(it + 1) - *it);
-		it++;
+		int span = *next - *it;
+		if (span < minSpan)
+			minSpan = span;
+		++it;
+		++next;
 	}
 
-	return *max_element(ranges.begin(), ranges.end());
+	return minSpan;
 }
 
 Span::~Span()
