@@ -6,7 +6,7 @@
 /*   By: tsofien- <tsofien-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:10:37 by tsofien-          #+#    #+#             */
-/*   Updated: 2025/05/23 20:56:22 by tsofien-         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:50:12 by tsofien-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ Span::Span(unsigned int n)
 {
 	if (n == 0)
 		throw std::invalid_argument("Span size cannot be zero");
-	if (n > 10000)
+	if (n > 50000)
 		throw std::out_of_range("Span size cannot exceed 10000");
 }
 
@@ -57,7 +57,7 @@ int Span::longestSpan()
 	if (_numbers.size() < 2)
 	{
 		setColor(RED);
-		throw std::out_of_range("Not enough numbers to calculate span");
+		throw std::out_of_range("Not enough numbers to calculate the longest span");
 	}
 	return *_numbers.rbegin() - *_numbers.begin();
 }
@@ -67,7 +67,7 @@ int Span::shortestSpan()
 	if (_numbers.size() < 2)
 	{
 		setColor(RED);
-		throw std::out_of_range("Not enough numbers to calculate span");
+		throw std::out_of_range("Not enough numbers to calculate the shortest span");
 	}
 
 	int minSpan = INT_MAX;
